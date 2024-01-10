@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model ShoppingCart;
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+
+    @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0)
+    {
+        <div class="table-responsive  border">
+            <table class="table table-bordered align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Qty.</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartDetails)
+                    {
+                        <tr>
+                            <td>@item.Item.Name</td>
+
+                            <td>@item.Quantity</td>
+                            <td>@String.Format("{0:C}", item.Item.Price)</td>
+                            <td>@String.Format("{0:C}", item.Item.Price * item.Quantity)</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-outline-primary" href="/Cart/AddItem?itemId=@item.ItemId&redirect=1">+</a>
+                                    <a class="btn btn-outline-secondary" href="/Cart/RemoveItem?itemId=@item.ItemId">-</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h4>Total:</h4>
+            <span class="fs-4">@String.Format("{0:C}", Model.CartDetails.Sum(item => item.Item.Price * item.Quantity))</span>
+        </div>
+
+        <div class="my-4">
+            <a class="btn btn-primary" href="/Cart/Checkout">Proceed to Checkout</a>
+            <a class="btn btn-outline-primary" href="/Home/Index">Continue Shopping</a>
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <br>
+            <h5 class="mb-3">Your cart is currently empty.</h5>
+            <p class="mb-4">Take a look at our products and find something you like.</p>
+            <a class="btn btn-outline-primary" href="/Home/Index">Start Shopping</a>
+        </div>
+    }
+</div>

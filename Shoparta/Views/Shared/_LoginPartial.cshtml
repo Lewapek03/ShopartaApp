@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+
+<ul class="navbar-nav ms-auto align-content-center">
+    <li class="nav-item">
+        <a class="nav-link pe-0" href="/Cart/UserCart">
+            <i class="bi bi-cart text-white"></i>
+        </a>
+    </li>
+    <li class="nav-item"> 
+        <a class="nav-link" href="/Cart/UserCart">
+            <span id="cartCount" class="badge text-bg-secondary">0</span>
+        </a>
+    </li>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white"  href="@Url.Action("AdminPanel", "Home")" >Admin Panel</a>
+            </li>
+        }        
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Manage/Index" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-white">@User.Identity?.Name</button>
+            </form>
+        </li>
+    }
+    else
+    {        
+        <li class="nav-item">
+            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>        
+    }
+</ul>
+
+
