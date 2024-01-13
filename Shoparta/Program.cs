@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shoparta.Data;
 using Shoparta.Repositories;
+using Shoparta.Services;
+// Brak potrzeby u¿ywania System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IHomeRepository, HomeRepository>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<IUserOrderRepository, UserOrderRepository>();
+
+// Zarejestruj IEmailSender i konfiguracjê SendGrid
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.Configure<SendGridOptions>(builder.Configuration.GetSection("SendGrid"));
+
 var app = builder.Build();
 //using (var scope = app.Services.CreateScope())
 //{
@@ -26,7 +33,7 @@ var app = builder.Build();
 //}
 
 
-    // Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
