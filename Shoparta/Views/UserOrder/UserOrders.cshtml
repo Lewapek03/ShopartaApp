@@ -35,15 +35,15 @@
                                         <tr>
                                             <td>@item.Item.Name</td>
                                             <td>@item.Quantity</td>
-                                            <td>@String.Format("{0:C}", item.Item.Price)</td>
-                                            <td>@String.Format("{0:C}", item.Item.Price * item.Quantity)</td>
+                                            <td>zł @(item.Item.Price)</td>
+                                            <td>zł @(item.Item.Price * item.Quantity)</td>
                                         </tr>
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="3" class="text-end">Order Total:</th>
-                                        <th>@String.Format("{0:C}", order.OrderDetail.Sum(od => od.Item.Price * od.Quantity))</th>
+                                        <th>zł @(order.OrderDetail.Sum(od => od.Item.Price * od.Quantity))</th>
                                     </tr>
                                 </tfoot>
                             </table>
