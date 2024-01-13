@@ -33,6 +33,10 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+      - name: Set SendGrid API Key
+        run: echo "SendGrid__ApiKey=$SENDGRID_API_KEY" >> .publish/appsettings.json
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
 
   deploy:
     runs-on: ubuntu-latest
