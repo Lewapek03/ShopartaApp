@@ -14,11 +14,13 @@ namespace Shoparta.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeRepository _homeRepository;
+        private readonly IUserOrderRepository _userOrderRepo;
 
-        public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository)
+        public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository, IUserOrderRepository userOrderRepository)
         {
             _homeRepository = homeRepository;
             _logger = logger;
+            _userOrderRepo = userOrderRepository;
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -62,9 +64,10 @@ namespace Shoparta.Controllers
             return View(creatEditItemDto);
         }
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminPanel()
+        public async Task<IActionResult> AdminPanel()
         {
-            return View();
+            var orders = await _userOrderRepo.UserOrders();
+            return View(orders);
         }
 
         [Authorize(Roles = "Admin")]
