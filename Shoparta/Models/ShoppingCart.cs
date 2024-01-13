@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Shoparta.Models
 {
     [Table("ShoppingCart")]
+
     public class ShoppingCart
     {
         public int Id { get; set; }
