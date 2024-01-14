@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Shoparta.Data;
 using Shoparta.Repositories;
 using Shoparta.Services;
@@ -23,8 +25,9 @@ builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<IUserOrderRepository, UserOrderRepository>();
 
 // Zarejestruj IEmailSender i konfiguracjê SendGrid
+builder.Services.Configure<SendGridOptions>(options =>
+    options.ApiKey = builder.Configuration.GetValue<string>("SendGrid__ApiKey"));
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
-builder.Services.Configure<SendGridOptions>(builder.Configuration.GetSection("SendGrid"));
 
 var app = builder.Build();
 //using (var scope = app.Services.CreateScope())
