@@ -20,14 +20,6 @@ Strona internetowa sklepu jest dostępna pod adresem: https://shoparta.azurewebs
 
 Projekt można łatwo uruchomić, klonując repozytorium za pomocą narzędzi deweloperskich obsługujących C#, a następnie kompilując i uruchamiając w odpowiednim środowisku.
 
-## Technologie
-
-- C# .NET 7 - język programowania i platforma do tworzenia aplikacji
-- ASP.NET Core 7 MVC - framework do tworzenia dynamicznych aplikacji webowych
-- Entity Framework Core - OR/M do obsługi baz danych
-- SQL Server - system zarządzania bazą danych
-- Bootstrap - framework CSS do tworzenia responsywnych interfejsów użytkownika
-
 ## Funkcjonalności
 
 Shoparta oferuje szereg funkcjonalności dla użytkowników oraz administratora sklepu, w tym:
@@ -37,4 +29,4 @@ Shoparta oferuje szereg funkcjonalności dla użytkowników oraz administratora 
 - Zarządzanie koszykiem zakupowym
 - Proces składania i realizacji zamówień
 - Panel administracyjny do dodwania produktów, kategorii.
-- Rejestracja i logowanie użytkowników z wykorzystaniem tożsamości ASP.NET Core
+- Rejestracja i logowanie użytkowników z wykorzystaniem identity ASP.NET Core
