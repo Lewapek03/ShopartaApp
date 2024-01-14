@@ -15,12 +15,12 @@ namespace Shoparta.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly Shoparta.Services.IEmailSender _sender;
+        //private readonly Shoparta.Services.IEmailSender _sender;
 
         public RegisterConfirmationModel(UserManager<IdentityUser> userManager, Shoparta.Services.IEmailSender sender)
         {
             _userManager = userManager;
-            _sender = sender;
+            //_sender = sender;
         }
 
         /// <summary>
@@ -49,6 +49,8 @@ namespace Shoparta.Areas.Identity.Pages.Account
                 return RedirectToPage("/Index");
             }
 
+
+
             returnUrl = returnUrl ?? Url.Content("~/");
 
             var user = await _userManager.FindByEmailAsync(email);
@@ -57,22 +59,36 @@ namespace Shoparta.Areas.Identity.Pages.Account
                 return NotFound($"Unable to load user with email '{email}'.");
             }
 
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+  
+            if (DisplayConfirmAccountLink)
+            {
+                var userId = await _userManager.GetUserIdAsync(user);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                EmailConfirmationUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    protocol: Request.Scheme);
+            }else//SendGrid
+            {
+                var userId = await _userManager.GetUserIdAsync(user);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                protocol: Request.Scheme);
-            string subject = "Confirm Your Account - Shoparta Team";
-            string body = $@"Hello,<br>
-            Please confirm your account on Shoparta by clicking the link below:<br>
-            <a href='{callbackUrl}'>Confirm Account</a><br>
-            The Shoparta Team<br>";
-            await _sender.SendEmailAsync(email, subject, body);
-    
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    protocol: Request.Scheme);
+                string subject = "Confirm Your Account - Shoparta Team";
+                string body = $@"Hello,<br>
+                Please confirm your account on Shoparta by clicking the link below:<br>
+                <a href='{callbackUrl}'>Confirm Account</a><br>
+                The Shoparta Team<br>";
+                //await _sender.SendEmailAsync(email, subject, body);
+            }
+
             return Page();
         }
     }
