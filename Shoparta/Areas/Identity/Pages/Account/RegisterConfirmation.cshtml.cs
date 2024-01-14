@@ -43,6 +43,7 @@ namespace Shoparta.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
         {
+            DisplayConfirmAccountLink = true;
             if (email == null)
             {
                 return RedirectToPage("/Index");
